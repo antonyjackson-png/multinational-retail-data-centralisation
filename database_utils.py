@@ -2,6 +2,25 @@ import yaml
 import sqlalchemy 
 
 class DatabaseConnector:
+    """
+    A class used to connect to a database
+
+    Attributes
+    ----------
+    yaml_file: a yaml_file containing database credentials
+    engine: a sqlalchemy database engine
+
+    Methods
+    -------
+    read_db_creds
+        obtains the database credentials from the yaml file
+    init_db_engine
+        instantiates a sqlalchemy database engine 
+    list_db_tables
+        list the database table names
+    upload_to_db
+        uploads a pandas dataframe to a database and converts to a database table    
+    """
     def __init__(self, yaml_file):
         self.yaml_file = yaml_file
         self.engine = None
