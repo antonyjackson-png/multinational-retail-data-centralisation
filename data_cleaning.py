@@ -5,6 +5,30 @@ import numpy as np
 
 
 class DataCleaning:
+    """
+    A class used to clean a variety of datasets.
+
+    Attributes
+    ----------
+    dataframe: a pandas dataframe
+
+    Methods
+    -------
+    clean_user_data
+        cleans the 'legacy_users' dataset
+    clean_card_data
+        cleans the 'card_details' dataset
+    called_clean_stores_data
+        cleans the 'store_details' dataset
+    convert_product_weights
+        converts g to kg and ml to kg
+    clean_products_data
+        cleans the 'products' dataset
+    clean_orders_data
+        cleans the 'orders_table' dataset
+    clean_sales_details
+        cleans the 'date_details' dataset
+    """
     def __init__(self):
         self.dataframe = None
 
