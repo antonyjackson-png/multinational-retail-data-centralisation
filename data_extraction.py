@@ -7,6 +7,29 @@ import boto3
 
 
 class DataExtractor:
+    """
+    A class used to extract data from a variety of datasets.
+
+    Attributes
+    ----------
+    databaseConnector: a DatabaseConnector object
+    table_name: database table
+
+    Methods
+    -------
+    read_rds_table
+        reads an sql table and returns a pandas dataframe
+    retrieve_pdf_data
+        reads a pdf and returns a pandas dataframe
+    list_number_of_stores
+        returns the number of stores from the api endpoint
+    retrieve_stores_data
+        reads the data for the number of stores, converts to pandas, concatenates into a single dataframe and returns the dataframe
+    extract_from_s3
+        reads a csv file and returns a pandas dataframe
+    retrieve_sales_data
+        reads the file at the api endpoint and returns a pandas dataframe
+    """
     def __init__(self, databaseConnector, table_name):
         self.databaseConnector = databaseConnector
         self.table_name = table_name
