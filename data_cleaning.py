@@ -98,10 +98,9 @@ class DataCleaning:
         # Replace invalid 10-character hash expressions with '0'
         regex_expression = '^[a-zA-Z0-9]{10}$'
         self.dataframe.loc[self.dataframe['card_number'].str.match(regex_expression), 'card_number'] = '0'
-        # Now convert strings to int64
-        self.dataframe.card_number = self.dataframe.card_number.astype('int64')
-        # Set '0's to np.nan
-        self.dataframe.card_number = self.dataframe.card_number.replace(0, np.nan)
+        # Retain card values that don't have the value '0
+        self.dataframe = self.dataframe[self.dataframe.card_number != '0']
+
         # Drop 'na's
         self.dataframe.dropna(inplace=True)
 
@@ -348,7 +347,7 @@ if __name__ == "__main__":
     cards_df = dataExtractor.retrieve_pdf_data(card_details)
     cleaned_cards_df = dataCleaner.clean_card_data(cards_df)
     databaseConnector.upload_to_db(cleaned_cards_df, 'dim_card_details')
-
+ 
     
     api_dict = {"x-api-key": "yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX"}
     number_stores_endpoint = "https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores"
@@ -367,9 +366,7 @@ if __name__ == "__main__":
     cleaned_products_df = dataCleaner.clean_products_data(converted_weights_df)
     databaseConnector.upload_to_db(cleaned_products_df, 'dim_products')
 
-    cleaned_products_df.to_csv("products_2.csv")
 
-    
     table_name_2 = "orders_table"
     databaseConnector.init_db_engine()
     dataExtractor = data_extraction.DataExtractor(databaseConnector, table_name_2)
