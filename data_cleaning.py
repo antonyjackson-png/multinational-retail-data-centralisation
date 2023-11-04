@@ -184,6 +184,22 @@ class DataCleaning:
 
         self.dataframe.weight = self.dataframe.weight.astype('string')
 
+        # Manually noted the following inplausible weights, due to incorrectly using 'g' rather than 'kg'
+        self.dataframe.loc[11, 'weight'] = '1.2kg'
+        self.dataframe.loc[12, 'weight'] = '1.2kg'
+        self.dataframe.loc[891, 'weight'] = '2.4kg'
+        self.dataframe.loc[892, 'weight'] = '1.38kg'
+        self.dataframe.loc[912, 'weight'] = '1.38kg'
+        self.dataframe.loc[1479, 'weight'] = '3.028kg'
+        self.dataframe.loc[1480, 'weight'] = '0.944kg'
+        self.dataframe.loc[1481, 'weight'] = '1.5kg'
+        self.dataframe.loc[1482, 'weight'] = '1.507kg'
+        self.dataframe.loc[1501, 'weight'] = '3.028kg'
+        self.dataframe.loc[1502, 'weight'] = '0.944kg'
+        self.dataframe.loc[1503, 'weight'] = '1.5kg'
+        self.dataframe.loc[1504, 'weight'] = '1.507kg'
+        self.dataframe.loc[1533, 'weight'] = '2.4kg'
+        
         # For weights with value '12 x 100g', replace with '1.2'
         self.dataframe['weight'] = self.dataframe['weight'].apply(lambda x: '1.2' if x == "12 x 100g" else x)
         # For weights with value '8 x 150g', replace with '1.2'
@@ -350,6 +366,8 @@ if __name__ == "__main__":
     converted_weights_df = dataCleaner.convert_product_weights(products_df)
     cleaned_products_df = dataCleaner.clean_products_data(converted_weights_df)
     databaseConnector.upload_to_db(cleaned_products_df, 'dim_products')
+
+    cleaned_products_df.to_csv("products_2.csv")
 
     
     table_name_2 = "orders_table"
