@@ -18,4 +18,8 @@ The project is run with the following command:
 ```
 python3 data_cleaning.py
 ```
+### SQL Queries
+The sql_queries folder contains sql queries in the form of text files.
 
+### SQL Screenshots
+The screenshots folder contains pgadmin4 results screenshots in the form of png files.
