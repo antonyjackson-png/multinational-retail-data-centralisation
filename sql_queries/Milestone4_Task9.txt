@@ -1,0 +1,49 @@
+WITH cte AS
+
+(
+	SELECT year,
+		   CAST(
+			   year || '-' || month || '-' || day || 
+		       ' ' || EXTRACT(HOUR FROM timestamp) || 
+		       ':' || EXTRACT(MINUTE FROM timestamp) ||
+		       ':' || EXTRACT(SECOND FROM timestamp) AS timestamp
+		   ) AS time_stamp
+	FROM 
+		orders_table
+	INNER JOIN
+		dim_date_times
+	ON
+		orders_table.date_uuid = dim_date_times.date_uuid
+	ORDER BY 
+		year, month, day, timestamp
+),
+
+cte2 AS
+
+(
+SELECT year,
+	   LEAD(time_stamp, 1) OVER (ORDER BY time_stamp)
+			   - time_stamp AS difference
+FROM 
+	cte
+), 
+
+cte3 AS
+(
+SELECT year,
+       AVG(difference) AS average_difference
+FROM cte2
+GROUP BY
+	year
+)
+
+SELECT year,
+	   'hours: ' || EXTRACT(HOUR FROM average_difference) ||
+	   ',  minutes: ' || EXTRACT(MINUTE FROM average_difference) ||
+	   ',  seconds: ' || ROUND(EXTRACT(SECOND FROM average_difference)) 
+	   	AS actual_time_taken
+FROM cte3
+ORDER BY
+	average_difference DESC
+LIMIT
+	5;
