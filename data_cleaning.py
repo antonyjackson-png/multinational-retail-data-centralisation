@@ -127,7 +127,6 @@ class DataCleaning:
 
         self.dataframe.address = self.dataframe.address.astype('string')
         
-
         # Dealing with index 0 (web access) 
         self.dataframe.loc[0, 'longitude'] = '0.0'
         self.dataframe.loc[0, 'latitude'] = '0.0'
@@ -326,7 +325,7 @@ if __name__ == "__main__":
     users_df = dataExtractor.read_rds_table().set_index('index')
 
     cleaned_users_df = dataCleaner.clean_user_data(users_df)
-    databaseConnector.upload_to_db(cleaned_users_df, 'dim_users')
+    databaseConnector.upload_to_db(cleaned_users_df, 'dim_users_table')
     
 
     card_details = "https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf"
